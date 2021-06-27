@@ -9,8 +9,18 @@
     <servlet-class>TextAnalysisServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>WordCountServlet</servlet-name>
+    <servlet-class>WordCountServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>TextAnalysisServlet</servlet-name>
     <url-pattern>/textbody/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>WordCountServlet</servlet-name>
+    <url-pattern>/wordcount/*</url-pattern>
   </servlet-mapping>
 </web-app>
