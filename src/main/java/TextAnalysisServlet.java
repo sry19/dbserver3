@@ -1,6 +1,4 @@
 import com.google.gson.Gson;
-import io.swagger.client.model.ErrMessage;
-import io.swagger.client.model.ResultVal;
 import io.swagger.client.model.TextLine;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,6 +55,7 @@ public class TextAnalysisServlet extends HttpServlet {
 
     // split url
     String[] urlParts = urlPath.split("/");
+    System.out.println(urlPath);
 
     StringBuilder jb = new StringBuilder();
     String line = null;
@@ -74,31 +73,32 @@ public class TextAnalysisServlet extends HttpServlet {
       // convert the request body to TextLine
       TextLine text = new Gson().fromJson(jb.toString(), TextLine.class);
 
-      response.setContentType("application/json");
+      //response.setContentType("application/json");
 
       // if the function is wordcount, then count the number of words and send back
-      if (urlParts[1].equals("wordcount")) {
+      if (urlParts[1].equals("wordCount")) {
         response.setStatus(HttpServletResponse.SC_OK);
-        ResultVal resultVal = new ResultVal();
+        //ResultVal resultVal = new ResultVal();
         int uniqueWord = handler(text.getMessage(),channel);
         this.genericObjectPool.returnObject(channel);
-        resultVal.setMessage(uniqueWord);
-        response.getWriter().write(new Gson().toJson(resultVal));
+        //resultVal.setMessage(uniqueWord);
+
+        response.getWriter().print(uniqueWord);
         // other functions
       } else {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        ErrMessage errMessage = new ErrMessage();
-        errMessage.setMessage("function need to be added");
-        response.getWriter().write(new Gson().toJson(errMessage));
+        //ErrMessage errMessage = new ErrMessage();
+        //errMessage.setMessage("function need to be added");
+        response.getWriter().write("function need to be added");
       }
       // if there is any exception, return an error message
     } catch (Exception e) {
       response.setContentType("application/json");
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      ErrMessage errMessage = new ErrMessage();
-      errMessage.setMessage(e.toString());
+      //ErrMessage errMessage = new ErrMessage();
+      //errMessage.setMessage(e.toString());
       //System.out.println(e.getMessage());
-      response.getWriter().write(new Gson().toJson(errMessage));
+      response.getWriter().write(e.toString());
     }
   }
 
@@ -110,6 +110,7 @@ public class TextAnalysisServlet extends HttpServlet {
 
   private int handler(String text,Channel channel) throws IOException {
     String[] wordList = text.split(" ");
+    System.out.println(text);
     Map<String, Integer> counter = new HashMap<String, Integer>();
     for (String s: wordList) {
       int count = counter.containsKey(s) ? counter.get(s) + 1 : 1;
@@ -118,6 +119,7 @@ public class TextAnalysisServlet extends HttpServlet {
     int count = 0;
     for (Map.Entry<String, Integer> entry: counter.entrySet()) {
       String message = entry.getKey() + " " + entry.getValue();
+      System.out.println(message);
       if (entry.getValue() == 1) {
         count += 1;
       }

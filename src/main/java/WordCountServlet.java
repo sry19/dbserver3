@@ -6,8 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.google.gson.Gson;
-import io.swagger.client.model.ErrMessage;
-import io.swagger.client.model.ResultVal;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.concurrent.TimeoutException;
@@ -65,19 +64,20 @@ public class WordCountServlet extends HttpServlet {
     try {
       System.out.println("Attempting to read the item...");
       Item outcome = table.getItem(spec);
-      response.setContentType("text/plain;charset=UTF-8");
+      //response.setContentType("text/plain;charset=UTF-8");
       response.setStatus(HttpServletResponse.SC_OK);
-      ResultVal resultVal = new ResultVal();
+      //ResultVal resultVal = new ResultVal();
       BigDecimal res = outcome.getNumber("counterme");
       int intres = res.intValue();
-      resultVal.setMessage(intres);
-      System.out.println(intres);
+      //resultVal.setMessage(intres);
+      //System.out.println(intres);
       //response.getWriter().write(new Gson().toJson(resultVal));
       response.getWriter().print(intres);
 
     }
     catch (Exception e) {
       System.err.println("Unable to read item: " + word);
+      System.out.println(e.getMessage());
       response.setContentType("application/json");
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       response.getWriter().write("word not found");

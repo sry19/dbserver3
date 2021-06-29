@@ -21,6 +21,6 @@
 
   <servlet-mapping>
     <servlet-name>WordCountServlet</servlet-name>
-    <url-pattern>/wordcount/*</url-pattern>
+    <url-pattern>/textbody/wordcount/*</url-pattern>
   </servlet-mapping>
 </web-app>
